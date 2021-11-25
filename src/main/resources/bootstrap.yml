@@ -1,25 +1,71 @@
+# Global configuration
+# properties are configured at global level to remain the same for both dev & prod profile or all other profiles defined below.
+# Important to read https://spring.io/blog/2020/08/14/config-file-processing-in-spring-boot-2-4
 spring:
   application:
-    name: consul-demo
+    name: consul-demo   # apply name
   cloud:
     consul:
-      host: localhost
-      port: 8500
+      host: localhost # Consul server address
+      port: 8500  # Consul server port
       discovery:
+        port: ${server.port}  # Service port
+        register: true  # Need to register
+        health-check-interval: 20s
         health-check-path: /actuator/health
-        health-check-interval: 60s
-        #prefer-ip-address: true
-        #ip-address: 192.168.1.57
+        service-name: ${spring.application.name}  # Service name
+        instanceId: ${spring.application.name}:${server.port}:${random.value}
+        # prefer-ip-address: true # Use ip address to register
+        # ip-address: ${spring.cloud.client.ip-address} # Service request ip
       config:
         failFast: true
-        enabled: true
-        prefix: config
-        defaultContext: oxchg-accounts
-        data-key: properties
-        profileSeparator: '::'
-        format: yaml
+        enabled: true # Enable configuration center
+        prefix: config  # Set the basic folder of the configuration.
+        defaultContext: oxchg-accounts  # Set the folder name of the application
+        data-key: properties  # The Key in Key/Values of Consul corresponds to the entire configuration file
+        profileSeparator: '-' # Configure environment separator
+        format: yaml  # Specify the configuration format
+        watch:
+          enabled: true # Whether to enable automatic refresh? The default value is true
+          delay: 1000 # Refresh rate in milliseconds, default 1000
+server:
+  port: 8080  # port
 
-# enabled setting this value to "false" disables Consul Config
-# prefix sets the base folder for configuration values
-# defaultContext sets the folder name used by all applications
-# profileSeparator sets the value of the separator used to separate the profile name in property sources with profiles
+---
+# Local environment
+spring:
+  config:
+    activate:
+      on-profile: "default"
+    import: classpath:local.yml
+
+---
+# Development environment
+spring:
+  config:
+    activate:
+      on-profile: "dev"
+
+---
+# Quality Assurance environment
+spring:
+  config:
+    activate:
+      on-profile: "qa"
+    import: classpath:qa.yml
+
+---
+# User Acceptance Test environment
+spring:
+  config:
+    activate:
+      on-profile: "uat"
+    import: classpath:uat.yml
+
+---
+# Production environment
+spring:
+  config:
+    activate:
+      on-profile: "prod"
+    import: classpath:prod.yml

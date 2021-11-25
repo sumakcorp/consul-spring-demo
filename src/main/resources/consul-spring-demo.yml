@@ -1,0 +1,8 @@
+security:
+ codeconnect:
+  client:
+    clientId: codeconnect-client-id-1234
+    clientSecret: codeconnect-client-secret-5678
+    authorizedGrantTypes: client_credentials
+    scope: am_application_scope
+    tokenURL: http://api.codeconnect.com:8090/codeconnect/token

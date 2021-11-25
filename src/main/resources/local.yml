@@ -1,0 +1,8 @@
+security:
+  codeconnect:
+    client:
+      clientId: local-12345
+      scope: local-am_application_scope
+      clientSecret: local-32432434kajskas
+      authorizedGrantTypes: local-client_credentials
+      tokenURL: http://local:8090/codeconnect/token
