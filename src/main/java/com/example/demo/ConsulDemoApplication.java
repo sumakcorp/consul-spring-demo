@@ -16,15 +16,19 @@ import javax.annotation.PostConstruct;
 @EnableConfigurationProperties
 @ComponentScan("com.example.demo")
 public class ConsulDemoApplication {
+
+	/**
+	 * Testing value injection property from consul
+	 */
 	@Value("${security.codeconnect.client.tokenURL}")
 	private String tokenURL;
+
 	public static void main(String[] args) {
 		SpringApplication.run(ConsulDemoApplication.class, args);
 	}
 
 	@PostConstruct
 	public void postConstruct() {
-		System.out.println(
-				"********** DemoApplication >> security.codeconnect.tokenURL: " + tokenURL);
+		System.out.println("ConsulDemoApplication >> security.codeconnect.tokenURL: " + tokenURL);
 	}
 }

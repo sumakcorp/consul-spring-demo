@@ -9,8 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.PostConstruct;
 import java.util.UUID;
 
+/**
+ * Rest controller used to test the direct @value injection of property value coming from Consul.
+ */
 @RestController
 public class DemoRestServiceController {
+
     @Value("${security.codeconnect.client.tokenURL}")
     private String tokenURL;
 
@@ -22,7 +26,6 @@ public class DemoRestServiceController {
 
     @PostConstruct
     public void postConstruct() {
-        System.out.println(
-                "********** RandomUUIDController >> security.codeconnect.tokenURL: " + tokenURL);
+        System.out.println("DemoRestServiceController >> security.codeconnect.tokenURL: " + tokenURL);
     }
 }
